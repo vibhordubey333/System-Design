@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/go-redis/redis/v8"
@@ -44,6 +45,7 @@ func SaveUrlMapping(shortUrl string, originalUrl string, userId string) {
 }
 
 func RetrieveInitialUrl(shortUrl string) string {
+	log.Println("RetrieveInitialUrl Payload: ", len(shortUrl))
 	result, err := storageService.redisClient.Get(ctx, shortUrl).Result()
 	if err != nil {
 		panic(fmt.Sprintf("Failed RetrieveInitialUrl url | Error: %v - shortUrl: %s\n", err, shortUrl))

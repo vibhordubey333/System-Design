@@ -30,7 +30,7 @@ func CreateShortURL(c *gin.Context) {
 }
 
 func HandleShortURLRedirect(c *gin.Context) {
-	shortURL := c.Param("shortUrl")
+	shortURL := c.Param("shortURL")
 	initialURL := repository.RetrieveInitialUrl(shortURL)
 	c.Redirect(302, initialURL)
 }

@@ -23,6 +23,7 @@ func main() {
 	})
 
 	r.GET("/:shortURL", func(c *gin.Context) {
+		fmt.Println("Context In ShortURL:", c.Keys)
 		handler.HandleShortURLRedirect(c)
 	})
 	repository.InitializeStore()
