@@ -17,5 +17,10 @@ Reasons for using `Base58`:
 2. Removing punctuations characters prevent confusion for line breakers.
 3. Double-clicking selects the whole number as one word if it's all alpha numeric.
 
-##
+## References
+
+Below references have helped me a lot in writing URL shortener.
+
+- https://www.eddywm.com/lets-build-a-url-shortener-in-go/
+- https://www.codekarle.com/system-design/TinyUrl-system-design.html
 
