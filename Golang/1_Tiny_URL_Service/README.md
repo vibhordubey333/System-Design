@@ -2,6 +2,13 @@
 
 TinyURL service to provide short URL when user requests by providing arguement as long url and vice versa.
 
+## Pre-requisite
+
+1. Go `go1.18 linux/amd64`
+2. Redis `sudo docker run -d -p 6379:6379 --name my-redis redis`
+   - `redis-cli`
+   - Fire `ping` output should be `pong`
+
 ## Tech Stack
 
 - Go
