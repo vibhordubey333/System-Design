@@ -18,15 +18,19 @@ func main() {
 		})
 	})
 
+	redisDBResponse, errorRespose := repository.LookUpDatabase("redis")
+	if errorRespose != nil {
+		fmt.Println("ErrorResponse: ", errorRespose)
+	}
+	handlerObject := new(handler.UrlCreationRequest)
 	r.POST("/create-short-url", func(c *gin.Context) {
-		handler.CreateShortURL(c)
+		handlerObject.CreateShortURL(c, redisDBResponse)
 	})
 
 	r.GET("/:shortURL", func(c *gin.Context) {
 		fmt.Println("Context In ShortURL:", c.Keys)
-		handler.HandleShortURLRedirect(c)
+		handlerObject.HandleShortURLRedirect(c, redisDBResponse)
 	})
-	repository.InitializeStore()
 
 	err := r.Run(":9808")
 	if err != nil {

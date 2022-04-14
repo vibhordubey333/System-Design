@@ -9,19 +9,19 @@ import (
 )
 
 type UrlCreationRequest struct {
-	LongUrl string `json:"long_url" binding required"`
+	LongUrl string `json:"long_url" binding:"required"`
 	UserId  string `json:"user_id" binding:"required"`
 }
 
-func CreateShortURL(c *gin.Context) {
-	var creationRequest UrlCreationRequest
-	if err := c.ShouldBindJSON(&creationRequest); err != nil {
+func (u *UrlCreationRequest) CreateShortURL(c *gin.Context, redisClient repository.Database) {
+
+	if err := c.ShouldBindJSON(u); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	shortURL := service.GenerateShortLink(creationRequest.LongUrl, creationRequest.UserId)
-	repository.SaveUrlMapping(shortURL, creationRequest.LongUrl, creationRequest.UserId)
+	shortURL := service.GenerateShortLink(u.LongUrl, u.UserId)
+	redisClient.SaveUrlMapping(shortURL, u.LongUrl, u.UserId)
 	host := "http://localhost:9808/"
 	c.JSON(200, gin.H{
 		"message":   "short url created successfully",
@@ -29,8 +29,8 @@ func CreateShortURL(c *gin.Context) {
 	})
 }
 
-func HandleShortURLRedirect(c *gin.Context) {
+func (u *UrlCreationRequest) HandleShortURLRedirect(c *gin.Context, redisClient repository.Database) {
 	shortURL := c.Param("shortURL")
-	initialURL := repository.RetrieveInitialUrl(shortURL)
+	initialURL := redisClient.RetrieveInitialUrl(shortURL)
 	c.Redirect(302, initialURL)
 }

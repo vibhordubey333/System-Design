@@ -9,44 +9,44 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
-type StorageService struct {
+type RedisClient struct {
 	redisClient *redis.Client
 }
 
 var (
-	storageService = &StorageService{}
-	ctx            = context.Background()
+	redisClientObject = &RedisClient{}
+	ctx               = context.Background()
 )
 
 // TODO : Pull this configuration dynamically using viper library.
 const CacheDuration = 6 * time.Hour
 
-func InitializeStore() *StorageService {
+func InitializeRedisDB() (Database, error) {
 	redisClient := redis.NewClient(&redis.Options{
 		Addr:     "localhost:6379",
-		Password: "",
-		DB:       0,
+		Password: "", // no password set
+		DB:       0,  // use default DB
 	})
 	ping, err := redisClient.Ping(ctx).Result()
 	if err != nil {
 		panic(fmt.Sprintf("Error init Redis : %v", err))
 	}
 	fmt.Printf("\nRedis started successfully : ping message = {%s}", ping)
-	storageService.redisClient = redisClient
-	return storageService
+	redisClientObject.redisClient = redisClient
+	return &RedisClient{redisClient: redisClient}, nil
 }
 
-func SaveUrlMapping(shortUrl string, originalUrl string, userId string) {
-	err := storageService.redisClient.Set(ctx, shortUrl, originalUrl, CacheDuration).Err()
+func (RedisClientObject *RedisClient) SaveUrlMapping(shortUrl string, originalUrl string, userId string) {
+	err := redisClientObject.redisClient.Set(ctx, shortUrl, originalUrl, CacheDuration).Err()
 	if err != nil {
 		panic(fmt.Sprintf("Failed saving key url | Error: %v - shortUrl: %s - originalUrl: %s\n", err, shortUrl, originalUrl))
 	}
 
 }
 
-func RetrieveInitialUrl(shortUrl string) string {
+func (RedisClientObject *RedisClient) RetrieveInitialUrl(shortUrl string) string {
 	log.Println("RetrieveInitialUrl Payload: ", len(shortUrl))
-	result, err := storageService.redisClient.Get(ctx, shortUrl).Result()
+	result, err := redisClientObject.redisClient.Get(ctx, shortUrl).Result()
 	if err != nil {
 		panic(fmt.Sprintf("Failed RetrieveInitialUrl url | Error: %v - shortUrl: %s\n", err, shortUrl))
 	}
