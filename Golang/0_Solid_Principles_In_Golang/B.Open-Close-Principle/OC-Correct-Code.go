@@ -1,3 +1,4 @@
+//Open-Close principle states, a software artifact should be open for extension but closed for modifications.
 package main
 import(
 	"fmt"
