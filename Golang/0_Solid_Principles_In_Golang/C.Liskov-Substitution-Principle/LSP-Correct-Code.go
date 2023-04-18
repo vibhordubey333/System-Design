@@ -51,11 +51,27 @@ func main(){
 	hummerVehicleObject.name = "Hummer"
 	
 	carHummerObject := Car{Vehicle: *hummerVehicleObject, wheel: 4,doors: 4}
-
+	motorcycleObject := Motorcycle{
+		Vehicle: Vehicle{name: "Kawasaki"},
+		wheel : 2,
+	}
 	printerObject := new(Printer)
+	//Passing Motorcycle object.
+	
 	//Passing Car struct object.
 	printerObject.printTransportName(carHummerObject)
+	//Passing Motorbyke object.
+	printerObject.printTransportName(motorcycleObject)
 	//Passing Hummer struct object.
 	printerObject.printTransportName(hummerVehicleObject)
 
 }
+/*
+$ go run LSP-Correct-Code.go 
+2023/04/18 16:30:29 Type of object:  main.Car
+Name:  Hummer
+2023/04/18 16:30:29 Type of object:  main.Motorcycle
+Name:  Kawasaki
+2023/04/18 16:30:29 Type of object:  *main.Vehicle
+Name:  Hummer
+*/
