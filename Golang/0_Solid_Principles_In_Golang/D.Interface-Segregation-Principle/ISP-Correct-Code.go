@@ -1,0 +1,1 @@
+//Interface Segregation Principle states, clients should not be forced to depend on methods they don't use.
