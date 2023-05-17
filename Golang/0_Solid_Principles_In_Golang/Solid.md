@@ -8,6 +8,9 @@ The **SOLID** principles are based on 5 pillar.
   - **I**nterface Segregation Principle
   - **D**ependency Inversion Principle
 
+![image](https://github.com/vibhordubey333/System-Design/assets/22407855/6535f1d4-124f-4de5-85cd-0ee8ec390a35)
+
+
 _source:_ https://www.freecodecamp.org/news/solid-principles-explained-in-plain-english/
 
 Q1.**Difference between Dependency Injection and Dependency Inversion?**<br/>
